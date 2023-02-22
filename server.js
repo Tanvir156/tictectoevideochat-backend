@@ -1,6 +1,8 @@
 const express = require("express");
 const path = require("path");
+const http = require("http");
 const app = express();
+const server = http.createServer(app);
 const cors = require("cors");
 app.use(cors());
 app.use(function(req, res, next) {
@@ -17,7 +19,7 @@ app.use(cors(corsOptions));
 app.get("/", (req, res) => {
   res.send("server is running");
 });
-const server = app.listen(5000, console.log("server is running at port 5000"));
+
 const io = require("socket.io")(server, {
   pingTimeout: 6000,
   cors: {
@@ -79,3 +81,5 @@ io.on("connection", (socket) => {
     console.log(`join room ${data.myid}`);
   });
 });
+
+server.listen(5000, console.log("server is running at port 5000"));
